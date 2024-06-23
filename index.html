@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Recommendation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        #container {
+            width: 50%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type=number] {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>E-commerce Recommendation System</h1>
+        <form id="form">
+            <input type="number" id="user_id" placeholder="Enter User ID">
+            <button type="button" onclick="recommend()">Recommend Products</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        function recommend() {
+            var userId = document.getElementById("user_id").value;
+            fetch("/recommend", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "user_id=" + encodeURIComponent(userId)
+            })
+            .then(response => response.json())
+            .then(data => {
+                var resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = "Recommended Products: " + data.recommendations.join(', ');
+            });
+        }
+    </script>
+</body>
+</html>
